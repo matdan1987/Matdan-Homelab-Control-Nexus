@@ -1,0 +1,41 @@
+# Configuration files with sensitive data
+config/config.php
+
+# Log files
+*.log
+/var/log/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+cache/
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# System files
+Thumbs.db
+.DS_Store
+
+# PHP
+vendor/
+composer.lock
+
+# Node (if used for build tools)
+node_modules/
+package-lock.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
