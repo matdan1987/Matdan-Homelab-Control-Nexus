@@ -65,6 +65,25 @@ try {
 // Initialize Authentication
 Auth::init($config['session']);
 
+// Check for API key authentication
+$apiKey = $_SERVER['HTTP_X_API_KEY'] ?? getParam('api_key');
+if ($apiKey) {
+    $keyData = ApiKeyManager::verify($apiKey);
+    if ($keyData) {
+        // Authenticate user via API key
+        $_SESSION['user_id'] = $keyData['user_id'];
+        $_SESSION['username'] = 'api_key_' . $keyData['id'];
+        $_SESSION['role'] = 'admin'; // API keys have full access by default
+        $_SESSION['api_key_auth'] = true;
+        $_SESSION['api_key_id'] = $keyData['id'];
+        $_SESSION['api_key_permissions'] = $keyData['permissions'];
+    } else {
+        http_response_code(401);
+        echo json_encode(['error' => 'Invalid or expired API key']);
+        exit;
+    }
+}
+
 // Initialize Event Logger
 EventLogger::init($config['logging']);
 
