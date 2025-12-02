@@ -492,5 +492,301 @@ Verwendet folgende Open-Source Projekte:
 
 ---
 
-**Version:** 1.0.0
-**Letzte Aktualisierung:** Januar 2025
+## 🚀 Enterprise Features (Version 2.0)
+
+Version 2.0 erweitert Matdan Control Nexus um umfassende Enterprise-Features für professionelle Homelab- und kleine Rechenzentrumsumgebungen.
+
+### ✅ Implementierte Enterprise Features
+
+#### 1. **API Key Management System**
+- Sichere API-Schlüssel-Generierung mit bcrypt-Hashing
+- Granulare Berechtigungsverwaltung pro API-Schlüssel
+- Nutzungsverfolgung und Statistiken
+- Ablaufdatum-Management
+- **API Endpoint:** `api/api_keys.php`
+- **Class:** `src/ApiKeyManager.php`
+
+```php
+// API Key Authentifizierung
+// Header: X-API-Key: mcn_[your-key-here]
+```
+
+#### 2. **Cost Tracking & Calculator**
+- Ressourcenkosten-Tracking (CPU, RAM, Storage)
+- Kosten-Berechnung nach Team/Service/Zeitraum
+- Automatische Cost-Snapshots
+- Kosten-Prognosen und Trend-Analysen
+- Detaillierte Breakdown-Reports
+- **API Endpoint:** `api/costs.php`
+- **Class:** `src/CostCalculator.php`
+
+**Features:**
+- Stündliche CPU-Core-Kosten
+- GB/Stunde Memory-Kosten
+- GB/Monat Storage-Kosten
+- Automatische Report-Generierung
+- Kosten-Alarme bei Schwellwerten
+
+#### 3. **VM Provisioning Engine**
+- Template-basierte VM-Bereitstellung
+- Automatische Node-Auswahl nach Ressourcen
+- Team-Quota-Validierung vor Provisionierung
+- Cloud-init Integration
+- IPAM-Integration für automatische IP-Zuweisung
+- Job-Tracking mit Status-Updates
+- **API Endpoint:** `api/provisioning.php`
+- **Class:** `src/ProvisioningEngine.php`
+
+**Features:**
+- Custom VM-Konfigurationen
+- Template-Verwaltung
+- Automated Node Selection
+- Resource Validation
+- Rollback bei Fehlern
+
+#### 4. **Monitoring & Alert System**
+- Vollständige Prometheus-Integration
+- Alertmanager Webhook-Verarbeitung
+- Custom Alert-Regeln mit Aktionen
+- Alert-Historie und Acknowledgment
+- Automatische Reaktionen (VM-Neustart, Skalierung, Webhooks)
+- **API Endpoint:** `api/monitoring.php`
+- **Classes:** `src/AlertManager.php`, `src/Integrations/PrometheusClient.php`
+
+**Alert Actions:**
+- VM restart
+- Policy execution
+- Scale-up triggers
+- External webhooks
+- Notification routing
+
+#### 5. **Multi-Tenancy System (Teams & Quotas)**
+- Team-Management mit hierarchischen Rollen
+- Ressourcen-Quotas (VMs, CPU, RAM, Storage)
+- Team-Mitglieder-Verwaltung
+- Ressourcen-Zuordnung zu Teams
+- Quota-Verletzungs-Tracking
+- Nutzungs- und Auslastungs-Reports
+- **API Endpoint:** `api/teams.php`
+- **Class:** `src/TeamManager.php`
+
+**Team-Rollen:**
+- Owner (volle Kontrolle)
+- Admin (Management)
+- Member (Nutzung)
+- Viewer (nur Lesezugriff)
+
+#### 6. **Notification Channels**
+Vollständige Multi-Channel-Benachrichtigungen:
+
+- **Discord** - Rich Embeds mit Severity-Farben
+  - Class: `src/Notifications/Channels/DiscordChannel.php`
+- **Telegram** - Markdown-formatierte Nachrichten
+  - Class: `src/Notifications/Channels/TelegramChannel.php`
+- **Gotify** - Self-hosted Notifications
+  - Class: `src/Notifications/Channels/GotifyChannel.php`
+- **Email** (bereits in v1.0)
+- **Slack** (bereits in v1.0)
+
+Alle Channels unterstützen Severity-Levels und Context-Fields.
+
+#### 7. **Network Management (IPAM)**
+- Vollständiges IP Address Management
+- CIDR-basierte Netzwerk-Verwaltung
+- Automatische IP-Allokation
+- Manuelle IP-Reservierung
+- Network Scanning (Ping Sweep)
+- Nutzungs-Tracking und Statistiken
+- **API Endpoint:** `api/networks.php`
+- **Class:** `src/NetworkManager.php`
+
+**Features:**
+- Subnet-Verwaltung
+- Gateway-Konfiguration
+- VLAN-Support
+- DNS-Server-Verwaltung
+- IP-Release Management
+
+#### 8. **Storage Management**
+- Storage-Pool-Registrierung und Tracking
+- Proxmox Storage-Synchronisation
+- Nutzungs-Monitoring
+- Low-Space-Detection
+- Health-Status-Überwachung
+- Best-Pool-Selection für Allokationen
+- **API Endpoint:** `api/storage.php`
+- **Class:** `src/StorageManager.php`
+
+**Features:**
+- Multi-Node Storage-Übersicht
+- Kapazitäts-Planung
+- Storage-Trends
+- Automatische Sync von Proxmox
+- Content-Type-Management
+
+#### 9. **Remote Access Integrations**
+Vollständige Integration-Clients für Remote-Access-Lösungen:
+
+- **MeshCentral** - Device Management & Remote Control
+  - Class: `src/Integrations/MeshCentralClient.php`
+  - Features: Device-Liste, Power-Management, Gruppen
+
+- **RustDesk** - Self-hosted Remote Desktop
+  - Class: `src/Integrations/RustDeskClient.php`
+  - Features: Peer-Management, Connection-Logs, Tokens
+
+- **Wireguard** - VPN Management
+  - Class: `src/Integrations/WireguardClient.php`
+  - Features: Interface-Status, Peer-Config, Key-Generation
+
+### 📊 API-Übersicht (Alle Endpoints)
+
+#### Core APIs
+- `api/auth.php` - Authentifizierung & Sessions
+- `api/nodes.php` - Proxmox Node Management
+- `api/pve_overview.php` - PVE Cluster Overview
+- `api/pve_vms.php` - VM/LXC Management
+- `api/services.php` - CMDB Service Catalog
+- `api/events.php` - Event Log & Audit Trail
+- `api/dashboard.php` - Dashboard Widgets
+
+#### Enterprise APIs (v2.0)
+- `api/api_keys.php` - API Key Management ✨ NEW
+- `api/costs.php` - Cost Tracking & Reports ✨ NEW
+- `api/provisioning.php` - VM Provisioning ✨ NEW
+- `api/monitoring.php` - Alerts & Prometheus ✨ NEW
+- `api/teams.php` - Multi-Tenancy & Quotas ✨ NEW
+- `api/networks.php` - IPAM & Network Management ✨ NEW
+- `api/storage.php` - Storage Pool Management ✨ NEW
+
+### 🔧 Erweiterte Konfiguration (v2.0)
+
+#### Cost Tracking aktivieren
+
+```php
+// config/config.php
+'cost_tracking' => [
+    'enabled' => true,
+    'cpu_core_hourly' => 0.02,      // € pro CPU-Core/Stunde
+    'memory_gb_hourly' => 0.01,      // € pro GB RAM/Stunde
+    'storage_gb_monthly' => 0.10,    // € pro GB Storage/Monat
+],
+```
+
+#### Teams & Quotas konfigurieren
+
+```php
+'teams' => [
+    'enabled' => true,
+    'default_quotas' => [
+        'max_vms' => 10,
+        'max_cpu_cores' => 20,
+        'max_memory_gb' => 64,
+        'max_storage_gb' => 500,
+    ],
+],
+```
+
+#### Monitoring Integration
+
+```php
+'monitoring' => [
+    'prometheus_url' => 'http://prometheus:9090',
+    'alertmanager_url' => 'http://alertmanager:9093',
+    'scrape_interval' => 300, // Sekunden
+],
+```
+
+#### Notification Channels
+
+```php
+'notifications' => [
+    'discord' => [
+        'webhook_url' => 'https://discord.com/api/webhooks/...',
+    ],
+    'telegram' => [
+        'bot_token' => 'your_bot_token',
+        'chat_id' => 'your_chat_id',
+    ],
+    'gotify' => [
+        'server_url' => 'https://gotify.yourdomain.com',
+        'app_token' => 'your_app_token',
+    ],
+],
+```
+
+### 📈 Neue Cron Jobs (v2.0)
+
+```bash
+# Cost Snapshot - stündlich
+0 * * * * /usr/bin/php /var/www/Matdan-Homelab-Control-Nexus/cron/cost_snapshot.php
+
+# Quota Check - alle 15 Minuten
+*/15 * * * * /usr/bin/php /var/www/Matdan-Homelab-Control-Nexus/cron/quota_check.php
+
+# Storage Sync - alle 30 Minuten
+*/30 * * * * /usr/bin/php /var/www/Matdan-Homelab-Control-Nexus/cron/storage_sync.php
+
+# Monitoring Sync - alle 5 Minuten
+*/5 * * * * /usr/bin/php /var/www/Matdan-Homelab-Control-Nexus/cron/monitoring_sync.php
+```
+
+### 🔐 Sicherheits-Features
+
+- **API Key Authentication** - Sichere API-Zugriffe
+- **Permission-Based Access Control** - Granulare Berechtigungen
+- **bcrypt Password Hashing** - Sichere Passwort-Speicherung
+- **SQL Injection Protection** - Prepared Statements überall
+- **XSS Protection** - Input Sanitization
+- **CSRF Protection** - Token-basierte Absicherung
+- **Audit Logging** - Vollständige Event-Historie
+
+### 📦 Datenbank-Migration auf v2.0
+
+```bash
+# Schema-Erweiterungen importieren
+mysql -u mcn_user -p matdan_control_nexus < sql/schema_extensions.sql
+```
+
+Dies erstellt 25+ neue Tabellen für alle Enterprise-Features.
+
+### 🎯 Use Cases
+
+#### Beispiel: VM mit Budget-Tracking provisionieren
+
+```bash
+# 1. API Key erstellen
+curl -X POST http://your-server/api/api_keys.php?action=create \
+  -H "Cookie: PHPSESSID=..." \
+  -d '{"name":"automation","permissions":["provisioning.create"]}'
+
+# 2. VM provisionieren
+curl -X POST http://your-server/api/provisioning.php?action=provision_from_template \
+  -H "X-API-Key: mcn_..." \
+  -d '{"template_id":1,"config":{"name":"web-01","cpu_cores":4,"memory_gb":8},"team_id":1}'
+
+# 3. Kosten abrufen
+curl http://your-server/api/costs.php?action=calculate \
+  -H "X-API-Key: mcn_..." \
+  -d '{"start_date":"2025-01-01","end_date":"2025-01-31","team_id":1}'
+```
+
+#### Beispiel: Team mit Quotas erstellen
+
+```bash
+curl -X POST http://your-server/api/teams.php?action=create \
+  -H "Cookie: PHPSESSID=..." \
+  -d '{
+    "name":"Development Team",
+    "max_vms":20,
+    "max_cpu_cores":40,
+    "max_memory_gb":128,
+    "max_storage_gb":1000
+  }'
+```
+
+---
+
+**Version:** 2.0.0 🚀
+**Letzte Aktualisierung:** Dezember 2025
+**Neue Features:** 9 Enterprise-Systeme, 7 neue APIs, 25+ Datenbank-Tabellen, 3000+ Zeilen Code
